@@ -1,7 +1,7 @@
 import { getBrowser } from "./browser";
 import { cleanHTML } from "./cleaner";
 
-export async function scraper(url: string){
+export async function scraper(url: string): Promise<string | null>{
   const browser = await getBrowser();
 
   const context = await browser.newContext({
@@ -26,7 +26,7 @@ export async function scraper(url: string){
 
     await page.goto(url, {
       waitUntil: "domcontentloaded",
-      timeout: 15000
+      // timeout: 15000
     })
 
     await page.waitForTimeout(1000);
@@ -46,4 +46,4 @@ export async function scraper(url: string){
 }
 
 
-scraper("https://abhimanyutiwaribot.vercel.app")
+// scraper("https://abhimanyutiwaribot.vercel.app")
