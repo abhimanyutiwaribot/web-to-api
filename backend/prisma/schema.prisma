@@ -1,0 +1,36 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+model Project {
+  id            String   @id @default(uuid())
+  name          String
+  baseUrl       String
+  type          String   // product | listing | article
+  itemSelector  String?  // CSS selector for repeating items (if listing)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  rules       ExtractionRule[]
+}
+
+model ExtractionRule {
+  id          String   @id @default(uuid())
+  projectId   String
+  fieldName   String
+  description String?
+  selector    String?  // CSS selector for this specific field
+  
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
